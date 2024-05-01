@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flor Interactiva con Corazones</title>
+    <style>
+        /* Estilos generales */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: pink;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            /* Cambia la fuente del cuerpo */
+        }
+
+        /* Estilos para los títulos */
+        h2 {
+            font-family: 'Georgia', serif;
+            /* Cambia la fuente de los títulos */
+            color: #333;
+        }
+
+        /* Estilos para el contenido */
+        p {
+            font-family: 'Arial', sans-serif;
+            /* Cambia la fuente del texto */
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Estilos para las letras */
+        .letter {
+            position: absolute;
+            color: purple;
+            font-size: 36px;
+            font-family: 'Times New Roman', serif;
+            /* Cambia la fuente de las letras */
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            top: -80px;
+        }
+
+        /* Estilos para el contenedor de la flor */
+        #flower-container {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            cursor: pointer;
+            font-family: 'Helvetica', sans-serif;
+            /* Cambia la fuente del contenedor de la flor */
+        }
+
+        /* Estilos para el centro de la flor */
+        #flower-center {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 140px;
+            /* Cambia este valor para ajustar la posición vertical */
+            left: 80px;
+            background-color: yellow;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        /* Estilos para los pétalos */
+        .petal {
+            position: absolute;
+            width: 60px;
+            height: 120px;
+            top: 40px;
+            left: 70px;
+            background-color: purple;
+            border-radius: 50%;
+            transform-origin: center bottom;
+            transition: transform 0.3s ease;
+        }
+
+        /* Estilos para el canvas de los corazones */
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 1;
+        }
+
+        .card {
+            width: 300px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            text-align: left;
+            /* Alinea el contenido del div a la izquierda */
+            position: fixed;
+            /* Fija la posición del div */
+            top: 20px;
+            /* Ajusta la distancia desde la parte superior */
+            left: 20px;
+            /* Ajusta la distancia desde el borde izquierdo */
+        }
+
+        .card.open {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Estilos para la primera imagen en la esquina superior derecha */
+        #corner-image-top-right {
+            position: fixed;
+            top: 20px;
+            /* Ajusta la posición desde arriba según sea necesario */
+            right: 20px;
+            /* Ajusta la posición desde la derecha según sea necesario */
+            width: 100px;
+            /* Ajusta el ancho de la imagen */
+            height: auto;
+            /* Altura automática proporcional al ancho */
+            border-radius: 10px;
+            /* Agrega bordes redondeados si es necesario */
+            z-index: 3;
+            /* Asegura que la imagen esté por encima de otros elementos */
+        }
+
+        /* Estilos para la segunda imagen en la esquina inferior derecha */
+        #corner-image-bottom-right {
+            position: fixed;
+            bottom: 20px;
+            /* Ajusta la posición desde abajo según sea necesario */
+            right: 20px;
+            /* Ajusta la posición desde la derecha según sea necesario */
+            width: 100px;
+            /* Ajusta el ancho de la imagen */
+            height: auto;
+            /* Altura automática proporcional al ancho */
+            border-radius: 10px;
+            /* Agrega bordes redondeados si es necesario */
+            z-index: 3;
+            /* Asegura que la imagen esté por encima de otros elementos */
+        }
+
+        /* Estilos para la tercera imagen en la esquina superior izquierda */
+        #corner-image-top-left {
+            position: fixed;
+            top: 20px;
+            /* Ajusta la posición desde arriba según sea necesario */
+            left: 20px;
+            /* Ajusta la posición desde la izquierda según sea necesario */
+            width: 100px;
+            /* Ajusta el ancho de la imagen */
+            height: auto;
+            /* Altura automática proporcional al ancho */
+            border-radius: 10px;
+            /* Agrega bordes redondeados si es necesario */
+            z-index: 3;
+            /* Asegura que la imagen esté por encima de otros elementos */
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Imagen en la esquina superior derecha -->
+    <img src="https://i.pinimg.com/originals/c5/c6/73/c5c673dc3cb4ebd03675713b984a25cd.gif" alt="Imagen 1"
+        id="corner-image-top-right">
+
+    <!-- Segunda imagen en la esquina inferior derecha -->
+    <img src="https://img1.picmix.com/output/stamp/normal/2/7/6/0/1820672_9d0db.gif" alt="Imagen 2"
+        id="corner-image-bottom-right">
+
+    <!-- Nueva imagen en la esquina superior izquierda -->
+    <img src="https://i.gifer.com/origin/45/4544d40934db21c8c54a978e928a70fc_w200.gif" alt="Imagen 3"
+        id="corner-image-top-left">
+
+
+    <div id="flower-container">
+        <div id="flower-center"></div>
+        <div class="petal" style="transform: rotate(0deg);"></div>
+        <div class="petal" style="transform: rotate(60deg);"></div>
+        <div class="petal" style="transform: rotate(120deg);"></div>
+        <div class="petal" style="transform: rotate(180deg);"></div>
+        <div class="petal" style="transform: rotate(240deg);"></div>
+        <div class="petal" style="transform: rotate(300deg);"></div>
+    </div>
+    <div class="card" id="loveLetter">
+        <img src="https://i.pinimg.com/originals/9e/c2/a2/9ec2a2e85e39cc2c9104de3b5b8a40c6.gif" alt="Imagen" />
+        <h2>Para Milka ❤️</h2>
+        <p>Quiero decirte que te estas convirtiendo en alguien muy especial para mí en verdad. ❤️</p>
+        <p>Eres muy linda y tienes cualidades únicas 💛</p>
+        <p>Con cariño: Leonardo... 👉 👈
+        </p>
+    </div>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        let isOpen = false;
+        const petals = document.querySelectorAll(".petal");
+        const center = document.getElementById("flower-center");
+        const card = document.getElementById('loveLetter');
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const hearts = [];
+        let isAnimating = false; // Variable para rastrear si la animación está en curso
+
+        // Función para abrir o cerrar los pétalos al hacer clic en el centro
+        center.addEventListener("click", function () {
+            if (isAnimating) return; // Si la animación está en curso, no hacer nada
+
+            isOpen = !isOpen;
+
+            if (isOpen) {
+                openPetalsOneByOne();
+
+                // Activar generación continua de corazones
+                canvas.style.display = 'block';
+                card.classList.add('open');
+            } else {
+                petals.forEach(petal => {
+                    petal.style.transform = "rotate(0deg) translateY(0)";
+                });
+
+                // Desactivar la generación de corazones al cerrar la flor
+                canvas.style.display = 'none';
+                card.classList.remove('open');
+                hearts.length = 0; // Limpiar el arreglo de corazones
+            }
+        });
+
+        // Función para abrir los pétalos uno por uno
+        function openPetalsOneByOne() {
+            isAnimating = true; // Indicar que la animación está en curso
+
+            petals.forEach((petal, index) => {
+                setTimeout(() => {
+                    petal.style.transform = `rotate(${index * 60}deg) translateY(-60px)`;
+                }, index * 300); // Ajusta el retraso (300ms por cada pétalo)
+
+                // Después de que se abran todos los pétalos, la animación ha terminado
+                if (index === petals.length - 1) {
+                    isAnimating = false;
+                }
+            });
+        }
+
+        // Función para crear un nuevo corazón
+        function createHeart(x, y) {
+            const heart = {
+                x: x,
+                y: y,
+                size: Math.random() * 30 + 10,
+                speed: Math.random() * 3 + 1,
+                color: '#' + Math.random().toString(16).slice(2, 8)
+            };
+            hearts.push(heart);
+        }
+
+        // Función para dibujar un corazón en una posición específica
+        function drawHeart(x, y, size, color) {
+            ctx.fillStyle = color;
+
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.bezierCurveTo(x + size, y - size, x + 2 * size, y + size / 2, x, y + size);
+            ctx.bezierCurveTo(x - 2 * size, y + size / 2, x - size, y - size, x, y);
+            ctx.fill();
+        }
+
+        // Función para dibujar los corazones en el canvas
+        function drawHearts() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < hearts.length; i++) {
+                const heart = hearts[i];
+
+                // Dibujar el corazón
+                drawHeart(heart.x, heart.y, heart.size, heart.color);
+
+                // Mover el corazón hacia abajo
+                heart.y += heart.speed;
+
+                // Eliminar el corazón cuando sale de la pantalla
+                if (heart.y > canvas.height) {
+                    hearts.splice(i, 1);
+                    i--;
+                }
+            }
+
+            // Crear nuevos corazones cada cierto intervalo de tiempo
+            if (Math.random() < 0.05) {
+                // Generar corazones sobre el área de la flor
+                const x = Math.random() * (canvas.width - 200); // Ancho del canvas menos el ancho de la flor
+                const y = Math.random() * (canvas.height - 200); // Alto del canvas menos la altura de la flor
+                createHeart(x, y);
+            }
+
+            requestAnimationFrame(drawHearts);
+        }
+
+        // Iniciar la animación de los corazones
+        drawHearts();
+    </script>
+</body>
+
+</html>

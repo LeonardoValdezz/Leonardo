@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flor Interactiva con Corazones</title>
+    <title>Milka ❤️</title>
     <style>
         /* Estilos generales */
         body {
@@ -174,6 +174,46 @@
             z-index: 3;
             /* Asegura que la imagen esté por encima de otros elementos */
         }
+
+        /* Estilos para el nuevo botón */
+        /* Estilos para el nuevo botón */
+        .big-heart-button {
+            font-size: 24px;
+            /* Tamaño del texto */
+            padding: 20px 40px;
+            /* Espaciado interno (arriba/abajo, izquierda/derecha) */
+            border: none;
+            /* Sin borde */
+            background-color: pink;
+            /* Color de fondo */
+            color: white;
+            /* Color del texto */
+            border-radius: 50px;
+            /* Bordes redondeados */
+            cursor: pointer;
+            /* Cambiar cursor al pasar por encima */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Sombra */
+            position: fixed;
+            /* Fijar la posición del botón */
+            top: 20px;
+            /* Distancia desde la parte superior */
+            left: 20px;
+            /* Distancia desde el borde izquierdo */
+            z-index: 999;
+            /* Asegurar que esté por encima de otros elementos */
+        }
+
+
+        /* Estilos específicos para el corazón dentro del botón */
+        .big-heart-button::after {
+            content: " ❤️";
+            /* Agregar un corazón al final del texto */
+            font-size: 28px;
+            /* Tamaño del corazón */
+            margin-left: 5px;
+            /* Margen a la izquierda del corazón */
+        }
     </style>
 </head>
 
@@ -201,6 +241,10 @@
         <div class="petal" style="transform: rotate(240deg);"></div>
         <div class="petal" style="transform: rotate(300deg);"></div>
     </div>
+    <br>
+    <a href="index2.html" class="big-heart-button">
+        Da click aquí ❤️
+    </a>
     <div class="card" id="loveLetter">
         <img src="https://i.pinimg.com/originals/9e/c2/a2/9ec2a2e85e39cc2c9104de3b5b8a40c6.gif" alt="Imagen" />
         <h2>Para Milka ❤️</h2>
